@@ -1,4 +1,4 @@
-(function(DOM) {
+(function($) {
   'use strict';
 
   /*
@@ -37,57 +37,54 @@
   */
 
   function allCarsApp() {
-    var $companyName = new DOM('[data-js="company-name"]');
-    var $companyPhone = new DOM('[data-js="company-phone"]');
-    var $formCar = new DOM('[data-js="form-insert"]');
-    var $carImage = new DOM('[data-js="carImage"]');
-    var $carBrandModel = new DOM('[data-js="carBrandModel"]');
-    var $carYear = new DOM('[data-js="carYear"]');
-    var $carPlate = new DOM('[data-js="carPlate"]');
-    var $carColor = new DOM('[data-js="carColor"]');
-    var $carsTable = new DOM('[data-js="carsTable"]');
-    var ajax = new XMLHttpRequest();
-    $formCar.on('submit', handleSubmitFormCar);
+    $('[data-js="form-insert"]').on('submit', handleSubmitFormCar);
 
     function handleSubmitFormCar(event) {
       event.preventDefault();
-      var carFieldsValues = [ $carImage.get()[0].value, $carBrandModel.get()[0].value, $carYear.get()[0].value, $carPlate.get()[0].value, $carColor.get()[0].value ];
-      var newTR = document.createElement('tr');
-      for (var i = 1; i <= 5; i++) {
-        var newTD = document.createElement('td');
-        var textForTD = document.createTextNode(carFieldsValues[i-1]);
-        newTD.appendChild(textForTD);
-        newTR.appendChild(newTD);
-      }
-      $carsTable.get()[0].appendChild(newTR);
+      createCarInfoTable();
       clearInputs();
     }
 
-    function clearInputs() {
-      $carImage.get()[0].value = '';
-      $carBrandModel.get()[0].value = '';
-      $carYear.get()[0].value = '';
-      $carPlate.get()[0].value = '';
-      $carColor.get()[0].value = '';
+    function createCarInfoTable() {
+      var newTR = document.createElement('tr');
+      var carFieldsValues = [ $('[data-js="carImage"]').get().value, $('[data-js="carBrandModel"]').get().value, $('[data-js="carYear"]').get().value, $('[data-js="carPlate"]').get().value, $('[data-js="carColor"]').get().value ];
+      var $image = document.createElement('img');
+      $image.setAttribute('src', carFieldsValues[0]);
+      var newTD = document.createElement('td');
+      newTD.appendChild($image);
+      newTR.appendChild(newTD);
+      for (var i = 1; i <= 4; i++) {
+        var newTD = document.createElement('td');
+        var textForTD = document.createTextNode(carFieldsValues[i]);
+        newTD.appendChild(textForTD);
+        newTR.appendChild(newTD);
+      }
+      $('[data-js="carsTable"]').get().appendChild(newTR);
     }
 
-    function isRequestOk() {
-      return ajax.readyState === 4 && ajax.status === 200;
+    function clearInputs() {
+      $('input').forEach(function(item) {
+        item.value='';
+      });
     }
 
     function showCompanyData() {
+      var ajax = new XMLHttpRequest();
       ajax.open('GET', '/company.json');
       ajax.send();
       ajax.addEventListener('readystatechange', function() {
-        if ( isRequestOk() ) {
+        if ( isRequestOk.call(this) ) {
           var dataCompany = JSON.parse(ajax.responseText);
-          $companyName.get()[0].textContent = dataCompany.name;
-          $companyPhone.get()[0].textContent = dataCompany.phone;
+          $('[data-js="company-name"]').get().textContent = dataCompany.name;
+          $('[data-js="company-phone"]').get().textContent = dataCompany.phone;
         }
       }, false);
     }
     showCompanyData();
 
+    function isRequestOk() {
+      return this.readyState === 4 && this.status === 200;
+    }
   }
 
   allCarsApp();
