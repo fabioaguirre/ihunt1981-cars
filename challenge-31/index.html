@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Challenge 31</title>
+  <style>
+    body {font-family: sans-serif;}
+    img {max-width: 200px; height: auto;}
+    header {text-align: center;}
+    form {float: left; width: 35%}
+    table {float: left; width: 65%}
+    label {display: block; }
+    input {padding: 5px; width: 300px; margin-bottom: 10px}
+    button {background: green; border:0; color: #fff; padding: 10px 20px;}
+    button:hover, button:focus {background: darkgreen;cursor: pointer;}
+    table {border-collapse: collapse;}
+    td, th {padding: 5px 15px; border: 1px solid #ccc;}
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>
+      <span data-js="company-name"></span> -
+      <span data-js="company-phone"></span>
+    </h1>
+  </header>
+
+  <div>
+    <form data-js="form-insert">
+      <label>Imagem do carro (URL):</label>
+      <input type="text" data-js="carImage">
+      <label>Marca / Modelo:</label>
+      <input type="text" data-js="carBrandModel">
+      <label>Ano:</label>
+      <input type="text" data-js="carYear">
+      <label>Placa:</label>
+      <input type="text" data-js="carPlate">
+      <label>Cor:</label>
+      <input type="text" data-js="carColor">
+      <br>
+      <button type="submit">Cadastrar</button>
+    </form>
+  </div>
+
+  <div>
+    <table border="1" cellspacing="0">
+      <tbody data-js="carsTable">
+        <tr>
+          <td>Imagem do carro</td>
+          <td>Marca / Modelo</td>
+          <td>Ano</td>
+          <td>Placa</td>
+          <td>Cor</td>
+          <td>Excluir</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="dom.js"></script>
+  <script src="challenge-31.js"></script>
+</body>
+</html>
